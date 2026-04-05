@@ -425,20 +425,19 @@ tailwind.config = {
 <section id="video" class="py-24 bg-gray-50">
   <div class="max-w-3xl mx-auto px-5">
     <p class="reveal text-xs font-bold tracking-[4px] text-dp uppercase mb-2">후보자 영상</p>
-    <h2 class="reveal font-serif text-3xl md:text-4xl font-bold text-dp-deep mb-10">홍은정의 목소리로<br>직접 들어보세요</h2>
+    <h2 class="reveal font-serif text-3xl md:text-4xl font-bold text-dp-deep mb-10">
+      홍은정의 목소리로<br>직접 들어보세요
+    </h2>
 
     <div class="reveal relative pt-[56.25%] rounded-2xl overflow-hidden shadow-2xl shadow-dp/20 bg-dp-deep">
-      <!-- ✅ YouTube 영상 연결: VIDEO_ID 부분을 실제 영상 ID로 교체 후 아래 주석 해제
-      <iframe class="absolute inset-0 w-full h-full" src="https://youtu.be/7X-3KheZjpo" allowfullscreen></iframe>
-      -->
-      <!-- Placeholder -->
-      <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-white/30">
-        <div class="w-16 h-16 rounded-full border-2 border-dp-mid/50 flex items-center justify-center bg-dp-mid/10">
-          <svg class="w-7 h-7 fill-dp-mid/70" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </div>
-        <p class="text-sm">YouTube 영상 ID를 입력해주세요</p>
-        <p class="text-xs opacity-60">HTML에서 VIDEO_ID를 실제 ID로 교체</p>
-      </div>
+      <iframe
+        class="absolute inset-0 w-full h-full"
+        src="https://www.youtube.com/embed/7X-3KheZjpo"
+        title="홍은정 후보자 영상"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
     </div>
   </div>
 </section>
