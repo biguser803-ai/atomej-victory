@@ -433,6 +433,268 @@ tailwind.config = {
 </div>
 
 
+<!-- ══════════════════════════════
+     공약 데이터 & 렌더링 JS
+     ✅ 공약 추가/수정은 여기 PLEDGES 배열만 바꾸면 됩니다
+══════════════════════════════ -->
+<script>
+/* ================================================================
+   PLEDGES 배열 — 공약 추가·수정은 여기만 수정하세요
+   
+   각 항목 구조:
+   {
+     num:    "01",              ← 번호 라벨 (자유롭게 변경 가능)
+     img:    "images/p01.jpg", ← 웹자보 이미지 경로 (postimg URL도 OK)
+     title:  "공약 제목",       ← 카드에 표시되는 짧은 제목
+     detail: [                 ← 모달에 보여줄 상세 내용 (배열로 입력)
+       "• 세부 항목 1",
+       "• 세부 항목 2",
+     ]
+   }
+   
+   공약 추가할 때: 맨 아래에 { ... }, 하나 추가하면 카드 자동 생성
+================================================================ */
+const PLEDGES = [
+  {
+    num:   "공약 01",
+    img:   "images/pledge01.jpg",   // ✅ 실제 웹자보 이미지 경로로 교체
+    title: "안전한 생활환경 조성",
+    detail: [
+      "• 노후 골목길 정비 및 방범 CCTV 확충",
+      "• 공원·녹지 공간 확대 및 관리 강화",
+      "• 재난 취약계층 안전망 구축",
+      "• 어두운 보행로 LED 조명 교체",
+    ]
+  },
+  {
+    num:   "공약 02",
+    img:   "images/pledge02.jpg",
+    title: "교육·돌봄 환경 강화",
+    detail: [
+      "• 공공 돌봄 시설 확충 및 운영 개선",
+      "• 청소년 방과후 문화·스포츠 프로그램 지원",
+      "• 학교 주변 교통 안전 환경 개선",
+      "• 초등학교 돌봄교실 전 학년 확대",
+    ]
+  },
+  {
+    num:   "공약 03",
+    img:   "images/pledge03.jpg",
+    title: "어르신 복지 확대",
+    detail: [
+      "• 경로당 시설 개선 및 프로그램 다양화",
+      "• 홀로 사는 어르신 돌봄 서비스 확대",
+      "• 어르신 일자리 연계 사업 강화",
+      "• 노인 무상교통 이용 범위 확대",
+    ]
+  },
+  {
+    num:   "공약 04",
+    img:   "images/pledge04.jpg",
+    title: "청년·소상공인 경제 활력",
+    detail: [
+      "• 청년 창업 지원 공간·멘토링 확대",
+      "• 전통시장·소상공인 상권 활성화",
+      "• 지역 취업 연계 플랫폼 구축",
+      "• 청년 주거 지원 프로그램 신설",
+    ]
+  },
+  {
+    num:   "공약 05",
+    img:   "images/pledge05.jpg",
+    title: "지속가능한 친환경 도봉",
+    detail: [
+      "• 생활 쓰레기 분리수거 시스템 개선",
+      "• 도봉산·초안산 연계 생태 보호",
+      "• 탄소중립 실천 주민 캠페인 운영",
+      "• 친환경 인프라 확충 지원",
+    ]
+  },
+  {
+    num:   "공약 06",
+    img:   "images/pledge06.jpg",
+    title: "교통·이동권 개선",
+    detail: [
+      "• 버스 노선 개선 및 심야버스 확대",
+      "• 자전거 도로 연결망 구축",
+      "• 이면도로 불법 주정차 단속 강화",
+    ]
+  },
+  {
+    num:   "공약 07",
+    img:   "images/pledge07.jpg",
+    title: "주거환경 개선",
+    detail: [
+      "• 노후 주택 리모델링 지원 확대",
+      "• 빈집 활용 커뮤니티 공간 조성",
+      "• 임대주택 거주민 생활환경 개선",
+    ]
+  },
+  {
+    num:   "공약 08",
+    img:   "images/pledge08.jpg",
+    title: "문화·체육 인프라 확충",
+    detail: [
+      "• 생활 체육시설 접근성 강화",
+      "• 주민 문화센터 프로그램 다양화",
+      "• 청소년 문화 공간 신규 조성",
+    ]
+  },
+  {
+    num:   "공약 09",
+    img:   "images/pledge09.jpg",
+    title: "여성·가족 안심 환경",
+    detail: [
+      "• 여성 안심 귀갓길 확대",
+      "• 아이 동반 가족 편의시설 강화",
+      "• 성평등 문화 확산 교육 지원",
+    ]
+  },
+  {
+    num:   "공약 10",
+    img:   "images/pledge10.jpg",
+    title: "디지털·스마트 도봉",
+    detail: [
+      "• 공공 와이파이 확충",
+      "• 디지털 취약계층 교육 지원",
+      "• 스마트 행정 서비스 도입 촉구",
+    ]
+  },
+  // ✅ 공약 추가 시 아래에 붙여넣기:
+  // {
+  //   num:   "공약 11",
+  //   img:   "images/pledge11.jpg",
+  //   title: "새 공약 제목",
+  //   detail: [
+  //     "• 세부 항목 1",
+  //     "• 세부 항목 2",
+  //   ]
+  // },
+];
+
+/* ──────────────────────────────────────────
+   카드 렌더링 — PLEDGES 배열을 읽어 자동 생성
+────────────────────────────────────────── */
+(function renderCards() {
+  const grid = document.getElementById('pledge-grid');
+  if (!grid) return;
+
+  PLEDGES.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'reveal' + (i % 4 === 1 ? ' reveal-delay-1' : i % 4 === 2 ? ' reveal-delay-2' : i % 4 === 3 ? ' reveal-delay-3' : '');
+    card.innerHTML = `
+      <button
+        onclick="openPledgeModal(${i})"
+        class="pledge-img-card group w-full text-left rounded-2xl overflow-hidden border border-white/10 bg-white/5 hover:border-dp-mid transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-blue-900/30 focus:outline-none focus:ring-2 focus:ring-dp-mid"
+        aria-label="${p.title} 상세보기"
+      >
+        <!-- 이미지 영역 -->
+        <div class="relative overflow-hidden" style="aspect-ratio:3/4;">
+          <img
+            src="${p.img}"
+            alt="${p.title} 웹자보"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            onerror="this.parentElement.innerHTML=\`
+              <div style='width:100%;height:100%;background:linear-gradient(135deg,#001845,#002670,#003B96);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:12px;text-align:center;'>
+                <span style='font-size:2rem;opacity:.25;'>📋</span>
+                <span style='font-size:.65rem;color:rgba(255,255,255,.3);line-height:1.5;'>${p.num}<br>${p.title}</span>
+              </div>\`"
+          >
+          <!-- hover 오버레이 -->
+          <div class="absolute inset-0 bg-dp-deep/0 group-hover:bg-dp-deep/50 transition-all duration-300 flex items-center justify-center">
+            <span class="opacity-0 group-hover:opacity-100 transition-all duration-300 text-white text-xs font-bold tracking-wider bg-dp-mid/80 px-4 py-2 rounded-full backdrop-blur-sm">
+              자세히 보기 →
+            </span>
+          </div>
+        </div>
+        <!-- 카드 하단 라벨 -->
+        <div class="px-3 py-3">
+          <p class="text-[10px] font-bold text-dp-mid/70 tracking-wider mb-0.5">${p.num}</p>
+          <p class="text-xs font-medium text-white leading-snug line-clamp-2">${p.title}</p>
+        </div>
+      </button>
+    `;
+    grid.appendChild(card);
+  });
+
+  // 새로 추가된 카드도 reveal 감지
+  document.querySelectorAll('#pledge-grid .reveal').forEach(el => {
+    if (window.__revealObserver) window.__revealObserver.observe(el);
+  });
+})();
+
+/* ──────────────────────────────────────────
+   모달 열기 / 닫기
+────────────────────────────────────────── */
+function openPledgeModal(idx) {
+  const p = PLEDGES[idx];
+  if (!p) return;
+
+  // 내용 채우기
+  document.getElementById('modal-num').textContent   = p.num;
+  document.getElementById('modal-title').textContent = p.title;
+
+  const img      = document.getElementById('modal-img');
+  const fallback = document.getElementById('modal-img-fallback');
+  img.style.display = 'block';
+  fallback.style.display = 'none';
+  img.src = p.img;
+  img.alt = p.title + ' 웹자보';
+
+  // 상세 내용 렌더링
+  const detail = document.getElementById('modal-detail');
+  detail.innerHTML = p.detail.map(line =>
+    `<p class="flex gap-2 items-start py-2 border-b border-gray-100 last:border-0">
+       <span class="text-dp-mid font-bold mt-0.5 flex-shrink-0">•</span>
+       <span>${line.replace(/^[•·\-]\s*/, '')}</span>
+     </p>`
+  ).join('');
+
+  // 모달 표시
+  const modal = document.getElementById('pledge-modal');
+  const inner = document.getElementById('pledge-modal-inner');
+  modal.style.pointerEvents = 'all';
+  modal.style.opacity = '1';
+  inner.style.transform = 'translateY(0)';
+  document.body.style.overflow = 'hidden';
+}
+
+function closePledgeModal() {
+  const modal = document.getElementById('pledge-modal');
+  const inner = document.getElementById('pledge-modal-inner');
+  modal.style.opacity = '0';
+  modal.style.pointerEvents = 'none';
+  inner.style.transform = 'translateY(24px)';
+  document.body.style.overflow = '';
+}
+
+// ESC 키로 닫기
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePledgeModal();
+});
+
+/* ──────────────────────────────────────────
+   reveal 옵저버 글로벌 참조 저장 (카드 동적 추가 대응)
+────────────────────────────────────────── */
+(function() {
+  if (!window.__revealObserver) {
+    window.__revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          window.__revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+  }
+  // 기존 .reveal 요소도 등록
+  document.querySelectorAll('.reveal').forEach(el => {
+    window.__revealObserver.observe(el);
+  });
+})();
+</script>
+
+
 
 <!-- ══════════════════════════════
      VIDEO
