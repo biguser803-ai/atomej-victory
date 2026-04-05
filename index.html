@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>홍은정 | 도봉구를 바꾸는 사람</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        dp:    { DEFAULT:'#003B96', dark:'#002670', deep:'#001845', mid:'#0050C8', light:'#E8EEF9' },
+        gold:  { DEFAULT:'#C9973A', light:'#F0C060' },
+      },
+      fontFamily: {
+        serif: ['"Noto Serif KR"','serif'],
+        sans:  ['"Noto Sans KR"','sans-serif'],
+      },
+    }
+  }
+}
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family:'Noto Sans KR',sans-serif; overflow-x:hidden; }
+
+  /* ── 네비 ── */
+  #navbar { transition: box-shadow .3s, background .3s; }
+  #navbar.scrolled { box-shadow:0 4px 32px rgba(0,20,60,.35); }
+
+  /* ── 히어로 그리드 배경 ── */
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* ── 스크롤 reveal ── */
+  .reveal { opacity:0; transform:translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity:1; transform:translateY(0); }
+  .reveal-delay-1 { transition-delay:.1s; }
+  .reveal-delay-2 { transition-delay:.2s; }
+  .reveal-delay-3 { transition-delay:.3s; }
+  .reveal-delay-4 { transition-delay:.4s; }
+
+  /* ── 타임라인 선 ── */
+  .timeline-line::before {
+    content:''; position:absolute;
+    left:5.5rem; top:1.5rem; bottom:0;
+    width:1px; background:#e2e8f0;
+  }
+
+  /* ── 공약 카드 hover ── */
+  .pledge-card { transition: transform .3s, box-shadow .3s, border-color .3s; }
+  .pledge-card:hover { transform:translateY(-6px); box-shadow:0 24px 48px rgba(0,27,69,.14); border-color:#0050C8; }
+  .pledge-card::before {
+    content:''; position:absolute; top:0; left:0; right:0;
+    height:3px; background:linear-gradient(90deg,#003B96,#0050C8);
+    transform:scaleX(0); transform-origin:left; transition:transform .35s;
+    border-radius:4px 4px 0 0;
+  }
+  .pledge-card:hover::before { transform:scaleX(1); }
+
+  /* ── 갤러리 hover ── */
+  .gallery-item img { transition:transform .45s; }
+  .gallery-item:hover img { transform:scale(1.07); }
+  .gallery-overlay { opacity:0; transition:opacity .3s; }
+  .gallery-item:hover .gallery-overlay { opacity:1; }
+
+  /* ── 응원 버튼 pulse ── */
+  @keyframes pulse-ring {
+    0%   { transform:scale(1);   opacity:.6; }
+    100% { transform:scale(1.5); opacity:0;  }
+  }
+  .pulse-ring {
+    position:absolute; inset:0; border-radius:9999px;
+    border:2px solid #0050C8; animation:pulse-ring 1.6s ease infinite;
+  }
+
+  /* ── 팝업 ── */
+  #popup { transition:opacity .3s, transform .3s; }
+  #popup.hidden { opacity:0; pointer-events:none; transform:translateY(20px); }
+  #popup.show   { opacity:1; pointer-events:all;  transform:translateY(0); }
+
+  /* ── 모바일 메뉴 ── */
+  #mob-menu { transition:max-height .35s ease, opacity .3s; max-height:0; overflow:hidden; opacity:0; }
+  #mob-menu.open { max-height:400px; opacity:1; }
+
+  /* ── 숫자 애니메이션 ── */
+  @keyframes countUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .count-anim { animation:countUp .25s ease; }
+
+  /* placeholder 박스 */
+  .ph {
+    background:linear-gradient(135deg,#001845 0%,#002670 50%,#003B96 100%);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:.5rem; color:rgba(255,255,255,.3); font-size:.8rem; text-align:center;
+    border-radius:.75rem; overflow:hidden; position:relative;
+  }
+  .ph::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(135deg,rgba(0,80,200,.15),transparent);
+  }
+  .ph-icon { font-size:2.5rem; opacity:.35; }
+</style>
+</head>
+<body class="bg-white text-gray-900">
+
+<!-- ══════════════════════════════
+     NAV
+══════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-dp-deep/97 backdrop-blur-md border-b border-white/10">
+  <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+
+    <a href="#hero" class="flex items-center gap-3">
+      <span class="text-xs font-bold tracking-widest text-white/40 border border-white/20 px-2 py-1 rounded hidden sm:block">더불어민주당</span>
+      <span class="font-serif text-xl font-bold text-white tracking-tight">홍은정</span>
+    </a>
+
+    <!-- 데스크톱 메뉴 -->
+    <div class="hidden md:flex items-center gap-7">
+      <a href="#profile"  class="text-sm text-white/65 hover:text-white transition-colors relative group">프로필<span class="absolute -bottom-1 left-0 right-0 h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform"></span></a>
+      <a href="#pledges"  class="text-sm text-white/65 hover:text-white transition-colors relative group">공약<span class="absolute -bottom-1 left-0 right-0 h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform"></span></a>
+      <a href="#gallery"  class="text-sm text-white/65 hover:text-white transition-colors relative group">활동<span class="absolute -bottom-1 left-0 right-0 h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform"></span></a>
+      <a href="#cheer"    class="text-sm font-bold bg-dp-mid text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-colors">응원하기 💙</a>
+    </div>
+
+    <!-- 햄버거 -->
+    <button id="mob-toggle" class="md:hidden flex flex-col gap-1.5 p-2" onclick="toggleMob()">
+      <span class="block w-6 h-0.5 bg-white"></span>
+      <span class="block w-6 h-0.5 bg-white"></span>
+      <span class="block w-6 h-0.5 bg-white"></span>
+    </button>
+  </div>
+
+  <!-- 모바일 메뉴 -->
+  <div id="mob-menu" class="md:hidden bg-dp-dark border-t border-white/10">
+    <div class="flex flex-col px-5 py-4 gap-4">
+      <a href="#profile" onclick="closeMob()" class="text-white/80 text-sm font-medium py-2 border-b border-white/10">프로필</a>
+      <a href="#pledges" onclick="closeMob()" class="text-white/80 text-sm font-medium py-2 border-b border-white/10">공약</a>
+      <a href="#gallery" onclick="closeMob()" class="text-white/80 text-sm font-medium py-2 border-b border-white/10">활동사진</a>
+      <a href="#cheer"   onclick="closeMob()" class="text-center bg-dp-mid text-white text-sm font-bold py-3 rounded-lg">응원하기 💙</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════
+     HERO
+══════════════════════════════ -->
+<section id="hero" class="relative min-h-screen bg-dp-deep flex items-center overflow-hidden pt-16">
+  <div class="absolute inset-0 grid-bg"></div>
+  <div class="absolute top-0 right-0 w-96 h-96 bg-dp-mid/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+  <div class="absolute bottom-0 left-0 w-64 h-64 bg-dp/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-2 gap-12 items-center w-full">
+
+    <!-- 텍스트 -->
+    <div>
+      <div class="flex items-center gap-3 mb-7">
+        <span class="w-2 h-2 rounded-full bg-dp-mid shadow-lg shadow-blue-500/50"></span>
+        <span class="text-xs font-bold tracking-[3px] text-white/50 uppercase">더불어민주당 · 도봉구 시의원 후보</span>
+      </div>
+
+      <h1 class="font-serif text-7xl md:text-8xl font-black text-white leading-none tracking-[-4px] mb-4">홍은정</h1>
+      <p class="text-lg text-white/40 font-light tracking-[4px] mb-8">HONG EUN-JEONG</p>
+
+      <p class="font-serif text-xl md:text-2xl text-white/85 leading-relaxed mb-10">
+        주민 곁에서 듣고,<br>
+        현장에서 <span class="text-white font-semibold border-b-2 border-dp-mid pb-0.5">직접 해결하는</span><br>
+        도봉구의 일꾼이 되겠습니다.
+      </p>
+
+      <div class="flex gap-3 flex-wrap">
+        <a href="#pledges" class="inline-flex items-center gap-2 bg-dp-mid text-white font-bold px-7 py-3.5 rounded-xl hover:bg-blue-600 transition-all hover:-translate-y-0.5 shadow-lg shadow-blue-900/40">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          5대 공약 보기
+        </a>
+        <a href="#cheer" class="inline-flex items-center gap-2 border-2 border-white/25 text-white/80 font-medium px-7 py-3.5 rounded-xl hover:border-white/60 hover:text-white transition-all hover:-translate-y-0.5">
+          💙 응원하기
+        </a>
+      </div>
+    </div>
+
+    <!-- 사진 자리 -->
+    <div class="flex justify-center">
+      <div class="relative w-full max-w-sm">
+        <!-- 플로팅 카드 1 -->
+        <div class="absolute -left-4 top-1/4 z-20 bg-white/8 backdrop-blur border border-white/15 rounded-xl px-4 py-3 hidden sm:block">
+          <p class="text-xs text-white/40 tracking-widest mb-1">선거구</p>
+          <p class="text-sm font-bold text-white">서울 도봉구</p>
+        </div>
+        <!-- 플로팅 카드 2 -->
+        <div class="absolute -right-4 bottom-1/4 z-20 bg-white/8 backdrop-blur border border-white/15 rounded-xl px-4 py-3 hidden sm:block">
+          <p class="text-xs text-white/40 tracking-widest mb-1">기호</p>
+          <p class="text-sm font-bold text-white">1번</p>
+        </div>
+
+        <!-- 사진 placeholder -->
+        <div class="ph w-full aspect-[3/4]">
+          <!-- ✅ 사진 교체: 아래 img 태그 주석 해제 후 파일명 수정
+          <img src="images/hong_profile.jpg" alt="홍은정 후보" class="w-full h-full object-cover object-top">
+          -->
+          <div class="ph-icon">🧑</div>
+          <p class="text-xs px-4 z-10 relative">후보자 사진을 넣어주세요<br><span class="opacity-60">images/hong_profile.jpg</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 웨이브 -->
+  <svg class="absolute bottom-0 left-0 right-0" viewBox="0 0 1440 60" fill="white" preserveAspectRatio="none">
+    <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60Z"/>
+  </svg>
+</section>
+
+
+<!-- ══════════════════════════════
+     DECLARATION
+══════════════════════════════ -->
+<section id="declaration" class="py-24 bg-white">
+  <div class="max-w-3xl mx-auto px-5 text-center">
+    <p class="reveal text-xs font-bold tracking-[4px] text-dp uppercase mb-3">출마선언문</p>
+    <h2 class="reveal font-serif text-3xl md:text-4xl font-bold text-dp-deep leading-snug mb-12">도봉구를 위해<br>오늘, 이 자리에 섭니다</h2>
+
+    <div class="reveal relative bg-dp-light rounded-2xl p-10 md:p-14 text-left overflow-hidden">
+      <span class="absolute top-2 left-4 font-serif text-[9rem] leading-none text-dp/10 select-none pointer-events-none">"</span>
+      <div class="relative z-10 space-y-5 font-serif text-lg md:text-xl text-dp-deep leading-relaxed">
+        <p>존경하는 도봉구 주민 여러분,<br>저 홍은정은 오늘 도봉구 시의원 선거에 출마를 선언합니다.</p>
+        <!-- ✅ 아래 내용을 실제 출마선언문으로 교체하세요 -->
+        <p>지난 ○○년간 이 지역에서 살며 일하면서, 저는 언제나 한 가지 질문을 놓지 않았습니다. <em class="not-italic font-semibold text-dp-mid">"우리 동네는 왜 이 문제를 해결하지 못하고 있을까?"</em></p>
+        <p>주민의 불편이 정책이 되고, 현장의 목소리가 의회에 닿는 정치를 만들겠습니다. 거창한 약속보다 실현 가능한 공약으로, 말보다 행동으로 증명하겠습니다.</p>
+        <p>도봉구의 내일을 함께 만들어 주십시오. 반드시 보답하겠습니다.</p>
+      </div>
+      <div class="mt-8 pt-6 border-t border-dp/15 flex items-center justify-end gap-4">
+        <div class="flex-1 h-px bg-dp/10"></div>
+        <div class="text-right">
+          <p class="font-serif font-bold text-dp-deep">홍은정 올림</p>
+          <p class="text-sm text-gray-500 mt-1">더불어민주당 도봉구 시의원 후보</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     PROFILE
+══════════════════════════════ -->
+<section id="profile" class="py-24 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="reveal text-xs font-bold tracking-[4px] text-dp uppercase mb-2">프로필 & 경력</p>
+    <h2 class="reveal font-serif text-3xl md:text-4xl font-bold text-dp-deep mb-14">현장이 기반인<br>정치인 홍은정</h2>
+
+    <div class="grid md:grid-cols-[280px_1fr] gap-12 items-start">
+
+      <!-- 프로필 카드 -->
+      <div class="reveal">
+        <div class="rounded-2xl overflow-hidden shadow-xl shadow-dp/15">
+          <div class="ph aspect-[3/4]">
+            <!-- ✅ 사진 교체
+            <img src="images/hong_profile2.jpg" alt="홍은정" class="w-full h-full object-cover object-top">
+            -->
+            <div class="ph-icon">🧑</div>
+            <p class="text-xs z-10 relative opacity-50">프로필 사진</p>
+          </div>
+          <div class="bg-dp-deep px-6 py-5">
+            <p class="font-serif text-xl font-bold text-white">홍은정</p>
+            <p class="text-xs text-white/45 tracking-wider mt-1">더불어민주당 · 도봉구 시의원 후보</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 타임라인 -->
+      <div class="reveal reveal-delay-1">
+        <h3 class="font-serif text-xl font-bold text-dp-deep mb-6 pb-4 border-b-2 border-dp-light">주요 경력 및 학력</h3>
+        <div class="relative timeline-line space-y-0">
+
+          <!-- 항목 반복 구조: ct-year(연도) / ct-title(직책) / ct-desc(설명) -->
+          <div class="grid grid-cols-[88px_1fr] gap-x-8 py-5 border-b border-gray-100 group">
+            <span class="text-xs font-bold text-dp tracking-wide pt-1 text-right">출생</span>
+            <div class="relative pl-2 before:content-[''] before:absolute before:-left-[1.15rem] before:top-1.5 before:w-2.5 before:h-2.5 before:rounded-full before:bg-dp before:border-2 before:border-gray-50">
+              <!-- ✅ 내용 교체 -->
+              <p class="font-medium text-dp-deep">OO년생 · 도봉구 거주 OO년</p>
+              <p class="text-sm text-gray-500 mt-0.5">도봉구 토박이로 지역과 함께 성장</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-[88px_1fr] gap-x-8 py-5 border-b border-gray-100">
+            <span class="text-xs font-bold text-dp tracking-wide pt-1 text-right">학력</span>
+            <div class="relative pl-2 before:content-[''] before:absolute before:-left-[1.15rem] before:top-1.5 before:w-2.5 before:h-2.5 before:rounded-full before:bg-dp before:border-2 before:border-gray-50">
+              <p class="font-medium text-dp-deep">OO대학교 OO학과 졸업</p>
+              <p class="text-sm text-gray-500 mt-0.5">OO대학원 OO전공</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-[88px_1fr] gap-x-8 py-5 border-b border-gray-100">
+            <span class="text-xs font-bold text-dp tracking-wide pt-1 text-right">현재</span>
+            <div class="relative pl-2 before:content-[''] before:absolute before:-left-[1.15rem] before:top-1.5 before:w-2.5 before:h-2.5 before:rounded-full before:bg-dp before:border-2 before:border-gray-50">
+              <p class="font-medium text-dp-deep">○○ 대표 / 도봉구 ○○위원회 위원</p>
+              <p class="text-sm text-gray-500 mt-0.5">지역 주민 민원 해결 및 정책 제안 활동</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-[88px_1fr] gap-x-8 py-5 border-b border-gray-100">
+            <span class="text-xs font-bold text-dp tracking-wide pt-1 text-right">2020~</span>
+            <div class="relative pl-2 before:content-[''] before:absolute before:-left-[1.15rem] before:top-1.5 before:w-2.5 before:h-2.5 before:rounded-full before:bg-dp before:border-2 before:border-gray-50">
+              <p class="font-medium text-dp-deep">도봉구 ○○협의회 위원</p>
+              <p class="text-sm text-gray-500 mt-0.5">지역 교육·복지 정책 자문 및 연구</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-[88px_1fr] gap-x-8 py-5 border-b border-gray-100">
+            <span class="text-xs font-bold text-dp tracking-wide pt-1 text-right">2018~20</span>
+            <div class="relative pl-2 before:content-[''] before:absolute before:-left-[1.15rem] before:top-1.5 before:w-2.5 before:h-2.5 before:rounded-full before:bg-dp before:border-2 before:border-gray-50">
+              <p class="font-medium text-dp-deep">OO시민단체 활동</p>
+              <p class="text-sm text-gray-500 mt-0.5">도봉구 환경·교육 분야 시민운동</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-[88px_1fr] gap-x-8 py-5">
+            <span class="text-xs font-bold text-dp tracking-wide pt-1 text-right">수상</span>
+            <div class="relative pl-2 before:content-[''] before:absolute before:-left-[1.15rem] before:top-1.5 before:w-2.5 before:h-2.5 before:rounded-full before:bg-gold before:border-2 before:border-gray-50">
+              <p class="font-medium text-dp-deep">○○년 ○○ 표창 / 감사장</p>
+              <p class="text-sm text-gray-500 mt-0.5">지역사회 공헌 활동 인정</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     PLEDGES
+══════════════════════════════ -->
+<section id="pledges" class="py-24 bg-dp-deep relative overflow-hidden">
+  <div class="absolute inset-0 grid-bg opacity-50"></div>
+  <div class="relative z-10 max-w-6xl mx-auto px-5">
+    <p class="reveal text-xs font-bold tracking-[4px] text-white/45 uppercase mb-2">5대 핵심공약</p>
+    <h2 class="reveal font-serif text-3xl md:text-4xl font-bold text-white mb-3">주민과 약속합니다</h2>
+    <p class="reveal text-white/45 text-sm mb-12">말이 아닌 실천으로, 현장에서 검증된 공약을 제시합니다.</p>
+
+    <!-- 공약 그리드 -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      <!-- 공약 1 -->
+      <div class="reveal pledge-card relative bg-white/5 border border-white/10 rounded-2xl p-7 cursor-default">
+        <p class="text-xs font-bold tracking-[2px] text-dp-mid/70 mb-4">PLEDGE 01</p>
+        <div class="text-3xl mb-4">🏘️</div>
+        <h3 class="font-serif text-lg font-bold text-white leading-snug mb-3">안전하고 쾌적한<br>생활 환경 조성</h3>
+        <ul class="space-y-2">
+          <!-- ✅ 공약 내용 교체 -->
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>노후 골목길 정비 및 방범 CCTV 확충</li>
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>공원·녹지 공간 확대 및 관리 강화</li>
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>재난 취약계층 안전망 구축</li>
+        </ul>
+      </div>
+
+      <!-- 공약 2 -->
+      <div class="reveal reveal-delay-1 pledge-card relative bg-white/5 border border-white/10 rounded-2xl p-7 cursor-default">
+        <p class="text-xs font-bold tracking-[2px] text-dp-mid/70 mb-4">PLEDGE 02</p>
+        <div class="text-3xl mb-4">👶</div>
+        <h3 class="font-serif text-lg font-bold text-white leading-snug mb-3">아이 키우기 좋은<br>교육·돌봄 환경</h3>
+        <ul class="space-y-2">
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>공공 돌봄 시설 확충 및 운영 개선</li>
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>청소년 방과후 문화·스포츠 프로그램</li>
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>학교 주변 교통 안전 환경 개선</li>
+        </ul>
+      </div>
+
+      <!-- 공약 3 -->
+      <div class="reveal reveal-delay-2 pledge-card relative bg-white/5 border border-white/10 rounded-2xl p-7 cursor-default">
+        <p class="text-xs font-bold tracking-[2px] text-dp-mid/70 mb-4">PLEDGE 03</p>
+        <div class="text-3xl mb-4">👴</div>
+        <h3 class="font-serif text-lg font-bold text-white leading-snug mb-3">어르신이 건강하게<br>누리는 복지</h3>
+        <ul class="space-y-2">
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>경로당 시설 개선 및 프로그램 다양화</li>
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>홀로 사는 어르신 돌봄 서비스 확대</li>
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>어르신 일자리 연계 사업 강화</li>
+        </ul>
+      </div>
+
+      <!-- 공약 4 -->
+      <div class="reveal reveal-delay-1 pledge-card relative bg-white/5 border border-white/10 rounded-2xl p-7 cursor-default">
+        <p class="text-xs font-bold tracking-[2px] text-dp-mid/70 mb-4">PLEDGE 04</p>
+        <div class="text-3xl mb-4">💼</div>
+        <h3 class="font-serif text-lg font-bold text-white leading-snug mb-3">청년과 소상공인을<br>위한 경제 활력</h3>
+        <ul class="space-y-2">
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>청년 창업 지원 공간·멘토링 확대</li>
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>전통시장·소상공인 상권 활성화</li>
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>지역 취업 연계 플랫폼 구축</li>
+        </ul>
+      </div>
+
+      <!-- 공약 5 (wide) -->
+      <div class="reveal reveal-delay-2 pledge-card relative bg-white/5 border border-white/10 rounded-2xl p-7 cursor-default sm:col-span-2 lg:col-span-2">
+        <p class="text-xs font-bold tracking-[2px] text-dp-mid/70 mb-4">PLEDGE 05</p>
+        <div class="text-3xl mb-4">🌿</div>
+        <h3 class="font-serif text-lg font-bold text-white leading-snug mb-3">깨끗한 환경과 지속가능한 도봉구</h3>
+        <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-2">
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>생활 쓰레기 분리수거 시스템 개선</li>
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>도봉산·초안산 연계 생태 보호</li>
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>탄소중립 실천 주민 캠페인 운영</li>
+          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>친환경 인프라 확충 지원</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     VIDEO
+══════════════════════════════ -->
+<section id="video" class="py-24 bg-gray-50">
+  <div class="max-w-3xl mx-auto px-5">
+    <p class="reveal text-xs font-bold tracking-[4px] text-dp uppercase mb-2">후보자 영상</p>
+    <h2 class="reveal font-serif text-3xl md:text-4xl font-bold text-dp-deep mb-10">홍은정의 목소리로<br>직접 들어보세요</h2>
+
+    <div class="reveal relative pt-[56.25%] rounded-2xl overflow-hidden shadow-2xl shadow-dp/20 bg-dp-deep">
+      <!-- ✅ YouTube 영상 연결: VIDEO_ID 부분을 실제 영상 ID로 교체 후 아래 주석 해제
+      <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
+      -->
+      <!-- Placeholder -->
+      <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 text-white/30">
+        <div class="w-16 h-16 rounded-full border-2 border-dp-mid/50 flex items-center justify-center bg-dp-mid/10">
+          <svg class="w-7 h-7 fill-dp-mid/70" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <p class="text-sm">YouTube 영상 ID를 입력해주세요</p>
+        <p class="text-xs opacity-60">HTML에서 VIDEO_ID를 실제 ID로 교체</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     GALLERY
+══════════════════════════════ -->
+<section id="gallery" class="py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="reveal text-xs font-bold tracking-[4px] text-dp uppercase mb-2">활동 사진</p>
+    <h2 class="reveal font-serif text-3xl md:text-4xl font-bold text-dp-deep mb-12">현장에서 함께한<br>이야기들</h2>
+
+    <!-- 비대칭 갤러리 그리드 -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+
+      <!-- 메인 큰 사진 -->
+      <div class="gallery-item reveal col-span-2 md:col-span-2 row-span-2 relative rounded-2xl overflow-hidden cursor-pointer" style="min-height:300px;">
+        <div class="ph w-full h-full absolute inset-0" style="border-radius:1rem;">
+          <!-- ✅ <img src="images/activity1.jpg" alt="주민 간담회" class="w-full h-full object-cover"> -->
+          <div class="ph-icon">📸</div>
+          <p class="text-xs z-10 relative opacity-50">메인 활동사진<br>images/activity1.jpg</p>
+        </div>
+        <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-dp-deep/80 to-transparent flex items-end p-5">
+          <p class="text-white text-sm font-medium">주민 간담회</p>
+        </div>
+      </div>
+
+      <!-- 작은 사진들 -->
+      <div class="gallery-item reveal reveal-delay-1 relative rounded-2xl overflow-hidden cursor-pointer aspect-square">
+        <div class="ph w-full h-full absolute inset-0" style="border-radius:1rem;">
+          <!-- ✅ <img src="images/activity2.jpg" alt="현장 점검" class="w-full h-full object-cover"> -->
+          <div class="ph-icon text-2xl">📸</div>
+          <p class="text-[10px] z-10 relative opacity-50">activity2.jpg</p>
+        </div>
+        <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-dp-deep/80 to-transparent flex items-end p-3">
+          <p class="text-white text-xs font-medium">현장 점검</p>
+        </div>
+      </div>
+
+      <div class="gallery-item reveal reveal-delay-2 relative rounded-2xl overflow-hidden cursor-pointer aspect-square">
+        <div class="ph w-full h-full absolute inset-0" style="border-radius:1rem;">
+          <!-- ✅ <img src="images/activity3.jpg" alt="청년 간담회" class="w-full h-full object-cover"> -->
+          <div class="ph-icon text-2xl">📸</div>
+          <p class="text-[10px] z-10 relative opacity-50">activity3.jpg</p>
+        </div>
+        <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-dp-deep/80 to-transparent flex items-end p-3">
+          <p class="text-white text-xs font-medium">청년 간담회</p>
+        </div>
+      </div>
+
+      <div class="gallery-item reveal reveal-delay-1 relative rounded-2xl overflow-hidden cursor-pointer aspect-square">
+        <div class="ph w-full h-full absolute inset-0" style="border-radius:1rem;">
+          <!-- ✅ <img src="images/activity4.jpg" alt="환경 캠페인" class="w-full h-full object-cover"> -->
+          <div class="ph-icon text-2xl">📸</div>
+          <p class="text-[10px] z-10 relative opacity-50">activity4.jpg</p>
+        </div>
+        <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-dp-deep/80 to-transparent flex items-end p-3">
+          <p class="text-white text-xs font-medium">환경 캠페인</p>
+        </div>
+      </div>
+
+      <div class="gallery-item reveal reveal-delay-2 relative rounded-2xl overflow-hidden cursor-pointer aspect-square">
+        <div class="ph w-full h-full absolute inset-0" style="border-radius:1rem;">
+          <!-- ✅ <img src="images/activity5.jpg" alt="어르신 방문" class="w-full h-full object-cover"> -->
+          <div class="ph-icon text-2xl">📸</div>
+          <p class="text-[10px] z-10 relative opacity-50">activity5.jpg</p>
+        </div>
+        <div class="gallery-overlay absolute inset-0 bg-gradient-to-t from-dp-deep/80 to-transparent flex items-end p-3">
+          <p class="text-white text-xs font-medium">어르신 방문</p>
+        </div>
+      </div>
+
+    </div>
+    <p class="text-xs text-gray-400 text-center mt-4">※ ✅ 표시된 img 태그 주석을 해제하고 실제 사진 파일명을 입력하세요.</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     CHEER — 응원하기
+══════════════════════════════ -->
+<section id="cheer" class="py-24 bg-dp-deep relative overflow-hidden">
+  <div class="absolute inset-0 grid-bg opacity-30"></div>
+  <div class="relative z-10 max-w-lg mx-auto px-5 text-center">
+
+    <p class="reveal text-xs font-bold tracking-[4px] text-white/40 uppercase mb-3">응원하기</p>
+    <h2 class="reveal font-serif text-3xl md:text-4xl font-bold text-white mb-4">함께해 주세요</h2>
+    <p class="reveal text-white/50 text-sm mb-12">홍은정 후보를 응원해 주시는 마음이<br>도봉구의 변화를 만드는 힘이 됩니다.</p>
+
+    <!-- 응원 카운터 -->
+    <div class="reveal mb-10">
+      <p class="text-white/40 text-xs tracking-widest mb-2">지금까지 응원해주신 분</p>
+      <div class="flex items-baseline justify-center gap-1">
+        <span id="cheer-count" class="font-serif text-6xl font-black text-white">0</span>
+        <span class="text-white/50 text-xl">명</span>
+      </div>
+    </div>
+
+    <!-- 응원 버튼 -->
+    <div class="reveal relative inline-block">
+      <span class="pulse-ring"></span>
+      <button id="cheer-btn" onclick="sendCheer()"
+        class="relative z-10 bg-dp-mid hover:bg-blue-500 active:scale-95 text-white font-bold text-lg px-14 py-5 rounded-2xl transition-all duration-200 shadow-2xl shadow-blue-900/50 flex items-center gap-3 mx-auto">
+        <span class="text-2xl">💙</span>
+        응원 보내기
+      </button>
+    </div>
+
+    <p id="cheer-already" class="hidden mt-4 text-white/40 text-sm">이미 응원해주셨어요! 감사합니다 💙</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     CONTACT / DONATE
+══════════════════════════════ -->
+<section id="contact" class="py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-5">
+    <p class="reveal text-xs font-bold tracking-[4px] text-dp uppercase mb-2">후원 & 연락처</p>
+    <h2 class="reveal font-serif text-3xl md:text-4xl font-bold text-dp-deep mb-12">함께해 주세요</h2>
+
+    <div class="grid md:grid-cols-2 gap-8">
+
+      <!-- 연락처 -->
+      <div class="reveal space-y-5">
+        <p class="text-gray-500 text-sm leading-relaxed mb-6">
+          홍은정 후보 선거사무소로 연락 주시면<br>성실히 답변드리겠습니다.
+        </p>
+
+        <div class="flex gap-4 items-center">
+          <div class="w-11 h-11 rounded-xl bg-dp-light flex items-center justify-center text-lg flex-shrink-0">📞</div>
+          <div>
+            <p class="text-xs tracking-widest text-dp font-bold mb-0.5">캠프 전화</p>
+            <!-- ✅ 실제 전화번호로 교체 -->
+            <p class="text-sm text-gray-700">02-000-0000</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-center">
+          <div class="w-11 h-11 rounded-xl bg-dp-light flex items-center justify-center text-lg flex-shrink-0">✉️</div>
+          <div>
+            <p class="text-xs tracking-widest text-dp font-bold mb-0.5">이메일</p>
+            <!-- ✅ 실제 이메일로 교체 -->
+            <p class="text-sm text-gray-700">hong@example.com</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-center">
+          <div class="w-11 h-11 rounded-xl bg-dp-light flex items-center justify-center text-lg flex-shrink-0">📍</div>
+          <div>
+            <p class="text-xs tracking-widest text-dp font-bold mb-0.5">선거사무소</p>
+            <!-- ✅ 실제 주소로 교체 -->
+            <p class="text-sm text-gray-700">서울특별시 도봉구 ○○로 ○○번지</p>
+          </div>
+        </div>
+
+        <div class="flex gap-4 items-center">
+          <div class="w-11 h-11 rounded-xl bg-dp-light flex items-center justify-center text-lg flex-shrink-0">📱</div>
+          <div>
+            <p class="text-xs tracking-widest text-dp font-bold mb-0.5">SNS</p>
+            <!-- ✅ 실제 SNS 계정으로 교체 -->
+            <p class="text-sm text-gray-700">@hong_eunjung</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 후원 -->
+      <div class="reveal reveal-delay-1">
+        <div class="bg-dp-light border border-dp/20 rounded-2xl p-8">
+          <h3 class="font-serif text-xl font-bold text-dp-deep mb-2">💙 후원하기</h3>
+          <p class="text-sm text-gray-500 leading-relaxed mb-6">
+            소중한 후원금은 도봉구 주민을 위한<br>정책 개발과 선거 활동에 사용됩니다.<br>
+            법정 한도 내에서 투명하게 운용됩니다.
+          </p>
+          <!-- ✅ 온라인 후원 링크로 교체 -->
+          <a href="#" class="block text-center bg-dp-mid hover:bg-blue-600 text-white font-bold py-4 rounded-xl transition-all hover:-translate-y-0.5 shadow-lg shadow-blue-900/25 mb-5">
+            온라인 후원하기 →
+          </a>
+          <div class="bg-white/70 rounded-xl p-4 text-sm text-gray-600 leading-relaxed">
+            <p class="font-medium text-dp-deep mb-1">후원 계좌</p>
+            <!-- ✅ 실제 계좌로 교체 -->
+            ○○은행 000-000000-00-000<br>
+            예금주: 홍은정 선거후원회<br>
+            <span class="text-xs text-gray-400 mt-2 block">※ 후원금은 선거법에 따라 영수증 처리됩니다</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════
+     FOOTER
+══════════════════════════════ -->
+<footer class="bg-dp-deep py-12 px-5">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8 pb-8 border-b border-white/10">
+      <div class="text-center md:text-left">
+        <p class="font-serif text-2xl font-bold text-white/50">홍은정</p>
+        <p class="text-xs text-white/25 mt-1">더불어민주당 도봉구 시의원 후보</p>
+      </div>
+      <!-- SNS 아이콘 -->
+      <div class="flex gap-3">
+        <!-- ✅ 각 링크를 실제 SNS 주소로 교체 -->
+        <a href="#" class="w-10 h-10 rounded-xl bg-white/8 border border-white/15 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/15 transition-all text-sm">📘</a>
+        <a href="#" class="w-10 h-10 rounded-xl bg-white/8 border border-white/15 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/15 transition-all text-sm">📸</a>
+        <a href="#" class="w-10 h-10 rounded-xl bg-white/8 border border-white/15 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/15 transition-all text-sm">▶️</a>
+        <a href="#" class="w-10 h-10 rounded-xl bg-white/8 border border-white/15 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/15 transition-all text-sm">💬</a>
+      </div>
+    </div>
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <nav class="flex gap-6 flex-wrap justify-center">
+        <a href="#declaration" class="text-xs text-white/30 hover:text-white/70 transition-colors">출마선언</a>
+        <a href="#profile"     class="text-xs text-white/30 hover:text-white/70 transition-colors">프로필</a>
+        <a href="#pledges"     class="text-xs text-white/30 hover:text-white/70 transition-colors">공약</a>
+        <a href="#gallery"     class="text-xs text-white/30 hover:text-white/70 transition-colors">활동</a>
+        <a href="#contact"     class="text-xs text-white/30 hover:text-white/70 transition-colors">후원</a>
+      </nav>
+      <p class="text-xs text-white/20 text-center">© 2026 홍은정 선거사무소. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════
+     팝업 (응원 완료)
+══════════════════════════════ -->
+<div id="popup" class="hidden fixed inset-0 z-[200] flex items-center justify-center px-5">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closePopup()"></div>
+  <div class="relative z-10 bg-white rounded-3xl p-10 max-w-sm w-full text-center shadow-2xl">
+    <div class="text-5xl mb-4 animate-bounce">💙</div>
+    <h3 class="font-serif text-2xl font-bold text-dp-deep mb-2">응원 메시지가<br>전달되었습니다!</h3>
+    <p class="text-gray-500 text-sm mt-3 mb-6">홍은정 후보에게 소중한 응원이 전달됐어요.<br>함께해 주셔서 감사합니다.</p>
+    <button onclick="closePopup()" class="bg-dp-mid text-white font-bold px-10 py-3 rounded-xl hover:bg-blue-600 transition-colors w-full">
+      확인
+    </button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     JAVASCRIPT
+══════════════════════════════ -->
+<script>
+/* ── 네비 스크롤 ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+/* ── 모바일 메뉴 ── */
+function toggleMob() { document.getElementById('mob-menu').classList.toggle('open'); }
+function closeMob()  { document.getElementById('mob-menu').classList.remove('open'); }
+
+/* ── 스크롤 Reveal ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── 응원 기능 (localStorage) ── */
+const STORAGE_KEY = 'hong_cheer_data';
+
+function getCheerData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : { count: 0, cheered: false };
+  } catch { return { count: 0, cheered: false }; }
+}
+
+function saveCheerData(data) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
+}
+
+function animateCount(from, to) {
+  const el = document.getElementById('cheer-count');
+  const duration = 600;
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(from + (to - from) * ease).toLocaleString();
+    el.classList.toggle('count-anim', p < 1);
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function initCheer() {
+  const data = getCheerData();
+  document.getElementById('cheer-count').textContent = data.count.toLocaleString();
+  if (data.cheered) {
+    document.getElementById('cheer-btn').disabled = true;
+    document.getElementById('cheer-btn').classList.add('opacity-50', 'cursor-not-allowed');
+    document.getElementById('cheer-already').classList.remove('hidden');
+    document.querySelector('.pulse-ring').style.display = 'none';
+  }
+}
+
+function sendCheer() {
+  const data = getCheerData();
+  if (data.cheered) return;
+
+  const newCount = data.count + 1;
+  saveCheerData({ count: newCount, cheered: true });
+
+  animateCount(data.count, newCount);
+
+  // 버튼 비활성화
+  const btn = document.getElementById('cheer-btn');
+  btn.disabled = true;
+  btn.classList.add('opacity-50', 'cursor-not-allowed');
+  document.getElementById('cheer-already').classList.remove('hidden');
+  document.querySelector('.pulse-ring').style.display = 'none';
+
+  // 팝업 표시
+  const popup = document.getElementById('popup');
+  popup.classList.remove('hidden');
+  setTimeout(() => popup.classList.add('show'), 10);
+}
+
+function closePopup() {
+  const popup = document.getElementById('popup');
+  popup.classList.remove('show');
+  setTimeout(() => popup.classList.add('hidden'), 300);
+}
+
+// 초기화
+initCheer();
+</script>
+</body>
+</html>
