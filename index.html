@@ -340,83 +340,98 @@ tailwind.config = {
 
 
 <!-- ══════════════════════════════
-     PLEDGES
+     PLEDGES — 웹자보 이미지 그리드 + 클릭 모달
 ══════════════════════════════ -->
 <section id="pledges" class="py-24 bg-dp-deep relative overflow-hidden">
   <div class="absolute inset-0 grid-bg opacity-50"></div>
+
   <div class="relative z-10 max-w-6xl mx-auto px-5">
-    <p class="reveal text-xs font-bold tracking-[4px] text-white/45 uppercase mb-2">5대 핵심공약</p>
+
+    <!-- 섹션 헤더 -->
+    <p class="reveal text-xs font-bold tracking-[4px] text-white/45 uppercase mb-2">핵심공약</p>
     <h2 class="reveal font-serif text-3xl md:text-4xl font-bold text-white mb-3">주민과 약속합니다</h2>
-    <p class="reveal text-white/45 text-sm mb-12">말이 아닌 실천으로, 현장에서 검증된 공약을 제시합니다.</p>
+    <p class="reveal text-white/45 text-sm mb-12">공약 카드를 클릭하면 상세 내용을 볼 수 있습니다.</p>
 
-    <!-- 공약 그리드 -->
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
-      <!-- 공약 1 -->
-      <div class="reveal pledge-card relative bg-white/5 border border-white/10 rounded-2xl p-7 cursor-default">
-        <p class="text-xs font-bold tracking-[2px] text-dp-mid/70 mb-4">PLEDGE 01</p>
-        <div class="text-3xl mb-4">🏘️</div>
-        <h3 class="font-serif text-lg font-bold text-white leading-snug mb-3">안전하고 쾌적한<br>생활 환경 조성</h3>
-        <ul class="space-y-2">
-          <!-- ✅ 공약 내용 교체 -->
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>노후 골목길 정비 및 방범 CCTV 확충</li>
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>공원·녹지 공간 확대 및 관리 강화</li>
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>재난 취약계층 안전망 구축</li>
-        </ul>
-      </div>
-
-      <!-- 공약 2 -->
-      <div class="reveal reveal-delay-1 pledge-card relative bg-white/5 border border-white/10 rounded-2xl p-7 cursor-default">
-        <p class="text-xs font-bold tracking-[2px] text-dp-mid/70 mb-4">PLEDGE 02</p>
-        <div class="text-3xl mb-4">👶</div>
-        <h3 class="font-serif text-lg font-bold text-white leading-snug mb-3">아이 키우기 좋은<br>교육·돌봄 환경</h3>
-        <ul class="space-y-2">
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>공공 돌봄 시설 확충 및 운영 개선</li>
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>청소년 방과후 문화·스포츠 프로그램</li>
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>학교 주변 교통 안전 환경 개선</li>
-        </ul>
-      </div>
-
-      <!-- 공약 3 -->
-      <div class="reveal reveal-delay-2 pledge-card relative bg-white/5 border border-white/10 rounded-2xl p-7 cursor-default">
-        <p class="text-xs font-bold tracking-[2px] text-dp-mid/70 mb-4">PLEDGE 03</p>
-        <div class="text-3xl mb-4">👴</div>
-        <h3 class="font-serif text-lg font-bold text-white leading-snug mb-3">어르신이 건강하게<br>누리는 복지</h3>
-        <ul class="space-y-2">
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>경로당 시설 개선 및 프로그램 다양화</li>
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>홀로 사는 어르신 돌봄 서비스 확대</li>
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>어르신 일자리 연계 사업 강화</li>
-        </ul>
-      </div>
-
-      <!-- 공약 4 -->
-      <div class="reveal reveal-delay-1 pledge-card relative bg-white/5 border border-white/10 rounded-2xl p-7 cursor-default">
-        <p class="text-xs font-bold tracking-[2px] text-dp-mid/70 mb-4">PLEDGE 04</p>
-        <div class="text-3xl mb-4">💼</div>
-        <h3 class="font-serif text-lg font-bold text-white leading-snug mb-3">청년과 소상공인을<br>위한 경제 활력</h3>
-        <ul class="space-y-2">
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>청년 창업 지원 공간·멘토링 확대</li>
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>전통시장·소상공인 상권 활성화</li>
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>지역 취업 연계 플랫폼 구축</li>
-        </ul>
-      </div>
-
-      <!-- 공약 5 (wide) -->
-      <div class="reveal reveal-delay-2 pledge-card relative bg-white/5 border border-white/10 rounded-2xl p-7 cursor-default sm:col-span-2 lg:col-span-2">
-        <p class="text-xs font-bold tracking-[2px] text-dp-mid/70 mb-4">PLEDGE 05</p>
-        <div class="text-3xl mb-4">🌿</div>
-        <h3 class="font-serif text-lg font-bold text-white leading-snug mb-3">깨끗한 환경과 지속가능한 도봉구</h3>
-        <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-2">
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>생활 쓰레기 분리수거 시스템 개선</li>
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>도봉산·초안산 연계 생태 보호</li>
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>탄소중립 실천 주민 캠페인 운영</li>
-          <li class="flex gap-2 text-sm text-white/50"><span class="text-dp-mid mt-0.5">•</span>친환경 인프라 확충 지원</li>
-        </ul>
-      </div>
-
+    <!-- 공약 카드 그리드 — JS가 자동 생성 -->
+    <div id="pledge-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <!-- 카드들은 아래 JS가 PLEDGES 배열을 읽어 자동으로 렌더링합니다 -->
     </div>
+
+    <!-- 안내 문구 -->
+    <p class="reveal text-xs text-white/25 text-center mt-8">
+      ※ 이미지를 images/ 폴더에 넣고 아래 PLEDGES 배열의 img 경로를 수정하세요.
+    </p>
   </div>
 </section>
+
+
+<!-- ══════════════════════════════
+     모달 — 공약 상세보기
+══════════════════════════════ -->
+<div id="pledge-modal"
+  class="fixed inset-0 z-[300] flex items-center justify-center px-4 py-8"
+  style="opacity:0; pointer-events:none; transition: opacity .25s;">
+
+  <!-- 배경 오버레이 -->
+  <div id="pledge-backdrop"
+    class="absolute inset-0 bg-dp-deep/85 backdrop-blur-sm"
+    onclick="closePledgeModal()">
+  </div>
+
+  <!-- 모달 본체 -->
+  <div id="pledge-modal-inner"
+    class="relative z-10 bg-white rounded-3xl overflow-hidden shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col"
+    style="transform: translateY(24px); transition: transform .3s;">
+
+    <!-- 상단: 이미지 -->
+    <div id="modal-img-wrap" class="relative w-full flex-shrink-0" style="aspect-ratio:16/9; background:#001845;">
+      <img id="modal-img" src="" alt=""
+        class="w-full h-full object-cover"
+        onerror="this.style.display='none'; document.getElementById('modal-img-fallback').style.display='flex';">
+      <!-- 이미지 없을 때 fallback -->
+      <div id="modal-img-fallback"
+        class="absolute inset-0 hidden items-center justify-center flex-col gap-2"
+        style="background:linear-gradient(135deg,#001845,#003B96);">
+        <span style="font-size:3rem; opacity:.3;">📋</span>
+        <span class="text-white/30 text-sm">이미지를 준비 중입니다</span>
+      </div>
+    </div>
+
+    <!-- 하단: 텍스트 (스크롤 가능) -->
+    <div class="flex flex-col flex-1 overflow-y-auto">
+
+      <!-- 제목 영역 -->
+      <div class="px-8 pt-7 pb-5 border-b border-gray-100">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p id="modal-num" class="text-xs font-bold tracking-[2px] text-dp mb-1"></p>
+            <h3 id="modal-title" class="font-serif text-2xl font-bold text-dp-deep leading-snug"></h3>
+          </div>
+          <button onclick="closePledgeModal()"
+            class="flex-shrink-0 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors text-gray-500 text-lg mt-0.5">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- 공약 상세 내용 -->
+      <div class="px-8 py-6 flex-1">
+        <div id="modal-detail" class="space-y-3 text-gray-700 text-sm leading-relaxed">
+          <!-- JS가 채움 -->
+        </div>
+      </div>
+
+      <!-- 하단 버튼 -->
+      <div class="px-8 pb-7 pt-2">
+        <button onclick="closePledgeModal()"
+          class="w-full bg-dp-mid hover:bg-blue-600 text-white font-bold py-3.5 rounded-xl transition-colors">
+          닫기
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <!-- ══════════════════════════════
